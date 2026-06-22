@@ -4,9 +4,11 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
+- What did the game look like the first time you ran it?  
+  - It looked like a reasonably designed game at first glance. The objective to "guess the correct number" with the option of selecting the game difficulty seems pretty straightforward.  
 - List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+  - The hints were backwards or reversed.
+  - The number of attempts is incorrectly counted. It starts at 1 already -- even before the player has made a turn yet.
 
 **Bug Reproduction Log**
 
@@ -14,9 +16,9 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+|"Easy mode"|"Attempts left: 6."  | "Attempts left: 5." | "Attempts: 1" |
+|Guess of -20 |Warning or error. |"Go lower!" hint |None. |
+|Guess of 50 |"Too low" hint |"Too high" hint | None.|
 
 ---
 
