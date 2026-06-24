@@ -29,7 +29,7 @@ Document at least 3 bugs you found. Add rows as needed.
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
   - AI correctly suggested that the logic in the guess was correct but just the hint messages needed to be swapped in `check_guess()`, lines 37-40.
   - For example: "Too High", "📈 Go HIGHER!" should be replaced with "Too High", 📉 Go LOWER!"
-  - I verified this result by implementing the changes and then playing the game. I also ran the corresponding logic test cases in `test_game_logic.py`. 
+  - I verified this result by implementing the changes and then playing the game. I also ran the logic test cases in `test_game_logic.py` that corresponded with the hints I'd expect as a user making guesses.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
 ---
