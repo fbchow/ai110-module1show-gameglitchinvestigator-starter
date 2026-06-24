@@ -33,8 +33,8 @@ Document at least 3 bugs you found. Add rows as needed.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
   - AI says:
 ```parse_guess only checks parseability, not whether the number is within the difficulty range (e.g. 1–100). "-50" or "99999" parse fine here; range validation must happen elsewhere.```
-  - That's not entirely true; validation could happen here. This is a case of AI being too literal about semantics. Parsing and range validation could mean the same thing contextually here arguablly. 
-  - AI incorrectly suggested that whitespace surrounding an integer should still parse. I think that's too generous for a user, but that's subjective. You could test this change by playing the game and entering "  42 " as an input. Or adding this case as a unit test.
+  - That's not entirely true; validation could happen here. This is a case of AI being too literal about semantics. Parsing and range validation could mean the same thing contextually here arguablly.
+  - AI incorrectly suggested that whitespace surrounding an integer should still parse. I think that's too generous to be so permissive of possible valid inputs for a user. But that's subjective, so we can keep white space as a valid guess. You could test this change by playing the game and entering "  42 " as an input. Or adding this case as a unit test.
     ```def test_parse_guess_handles_whitespace():
     # Surrounding whitespace around a valid integer should still parse.
     ok, value, err = parse_guess("  42  ")

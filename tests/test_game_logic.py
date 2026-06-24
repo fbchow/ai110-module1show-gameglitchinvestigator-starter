@@ -42,7 +42,7 @@ def test_banner_range_reflects_difficulty():
 def test_parse_guess_rejects_decimal_input():
     # Regression: "6.9" used to be silently truncated to 6 via int(float(...)).
     # A decimal is not a valid integer guess and must be rejected.
-    ok, value, err = parse_guess("6.9")
+    ok, value, err = parse_guess("6.9", 1, 100)
     assert ok is False
     assert value is None
     assert err == "That is not a number."
@@ -50,7 +50,7 @@ def test_parse_guess_rejects_decimal_input():
 
 def test_parse_guess_handles_whitespace():
     # Surrounding whitespace around a valid integer should still parse.
-    ok, value, err = parse_guess("  42  ")
+    ok, value, err = parse_guess("  42  ", 1, 100)
     assert ok is True
     assert value == 42
     assert err is None
@@ -58,7 +58,7 @@ def test_parse_guess_handles_whitespace():
 
 def test_parse_guess_whitespace_only_is_empty():
     # A string that is only whitespace counts as no guess.
-    ok, value, err = parse_guess("   ")
+    ok, value, err = parse_guess("   ", 1, 100)
     assert ok is False
     assert value is None
     assert err == "Enter a guess."
@@ -66,10 +66,32 @@ def test_parse_guess_whitespace_only_is_empty():
 
 def test_parse_guess_empty_input():
     # An empty string prompts the player to enter a guess.
-    ok, value, err = parse_guess("")
+    ok, value, err = parse_guess("", 1, 100)
     assert ok is False
     assert value is None
     assert err == "Enter a guess."
+
+
+def test_parse_guess_rejects_out_of_range():
+    # A numeric guess outside the difficulty's range must be rejected.
+    ok, value, err = parse_guess("0", 1, 20)
+    assert ok is False
+    assert value is None
+    assert err == "Guess must be between 1 and 20."
+
+    ok, value, err = parse_guess("21", 1, 20)
+    assert ok is False
+    assert value is None
+    assert err == "Guess must be between 1 and 20."
+
+
+def test_parse_guess_accepts_range_bounds():
+    # The inclusive bounds themselves are valid guesses.
+    for raw in ("1", "20"):
+        ok, value, err = parse_guess(raw, 1, 20)
+        assert ok is True
+        assert value == int(raw)
+        assert err is None
 
 
 def test_first_attempt_win_awards_90():
