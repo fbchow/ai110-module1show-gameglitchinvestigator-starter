@@ -9,7 +9,13 @@ def get_range_for_difficulty(difficulty: str):
         secret number can fall in. Unknown difficulties fall back to the
         default range.
     """
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if difficulty == "Easy":
+        return 1, 20
+    if difficulty == "Normal":
+        return 1, 50
+    if difficulty == "Hard":
+        return 1, 100
+    return 1, 100
 
 
 def parse_guess(raw: str):
@@ -25,7 +31,18 @@ def parse_guess(raw: str):
             error_message: A user-facing error string when parsing failed,
                 or None on success.
     """
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if raw is None:
+        return False, None, "Enter a guess."
+
+    if raw.strip() == "":
+        return False, None, "Enter a guess."
+
+    try:
+        value = int(raw)
+    except Exception:
+        return False, None, "That is not a number."
+
+    return True, value, None
 
 
 def check_guess(guess, secret):
@@ -58,4 +75,11 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
     Returns:
         The updated score as an int.
     """
-    raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
+    if outcome == "Win":
+        points = max(10, 100 - 10 * attempt_number)
+        return current_score + points
+
+    if outcome in ("Too High", "Too Low"):
+        return current_score - 5
+
+    return current_score

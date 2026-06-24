@@ -31,11 +31,17 @@ Document at least 3 bugs you found. Add rows as needed.
   - For example: "Too High", "📈 Go HIGHER!" should be replaced with "Too High", 📉 Go LOWER!"
   - I verified this result by implementing the changes and then playing the game. I also ran the logic test cases in `test_game_logic.py` that corresponded with the hints I'd expect as a user making guesses.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
-- AI says that the reason the difficulty level is not being updated when the user selects one from the drop-down list is because:  
-```
-- 1) secret is seeded once and not re-rolled when you change difficulty mid-game, so it can fall outside the new range.
-```
-- I do not know yet if that is correct. But to verify that you'd have to implement the change. And play the game for yourself. Or write a unit test that tests for the user flow of: selecting difficult, guessing, and receiving feedback.  
+  - AI says:
+```parse_guess only checks parseability, not whether the number is within the difficulty range (e.g. 1–100). "-50" or "99999" parse fine here; range validation must happen elsewhere.```
+  - That's not entirely true; validation could happen here. This is a case of AI being too literal about semantics. Parsing and range validation could mean the same thing contextually here arguablly. 
+  - AI incorrectly suggested that whitespace surrounding an integer should still parse. I think that's too generous for a user, but that's subjective. You could test this change by playing the game and entering "  42 " as an input. Or adding this case as a unit test.
+    ```def test_parse_guess_handles_whitespace():
+    # Surrounding whitespace around a valid integer should still parse.
+    ok, value, err = parse_guess("  42  ")
+    assert ok is True
+    assert value == 42
+    assert err is None```
+
 ---
 
 ## 3. Debugging and testing your fixes
@@ -55,9 +61,11 @@ Document at least 3 bugs you found. Add rows as needed.
 - "Every click restarts the whole script, but session state is the one part of memory that's allowed to survive the restart."
 
 - Claude's Explanation:  
-  ```Session state: Think of it as a sticky note that survives the chef throwing everything out and starting over. It's a little dictionary-like storage (st.session_state) that persists across reruns for a given user's session. So instead of declaring counter = 0 at the top of your script (which would reset every rerun), you stash it in st.session_state.counter, and Streamlit keeps that value around between reruns — until the browser tab closes or the session ends.
+  ```
+  Session state: Think of it as a sticky note that survives the chef throwing everything out and starting over. It's a little dictionary-like storage (st.session_state) that persists across reruns for a given user's session. So instead of declaring counter = 0 at the top of your script (which would reset every rerun), you stash it in st.session_state.counter, and Streamlit keeps that value around between reruns — until the browser tab closes or the session ends.
   
-  Putting it together with an analogy: Picture a whiteboard (your script) that gets erased and rewritten from scratch every time someone asks a question. Normally anything written on it disappears. But there's a locked drawer next to the whiteboard (session state) that doesn't get erased — so if you want certain numbers or choices to survive between rewrites, you put them in the drawer instead of writing them directly on the board.```
+  Putting it together with an analogy: Picture a whiteboard (your script) that gets erased and rewritten from scratch every time someone asks a question. Normally anything written on it disappears. But there's a locked drawer next to the whiteboard (session state) that doesn't get erased — so if you want certain numbers or choices to survive between rewrites, you put them in the drawer instead of writing them directly on the board.
+  ```
 
 ---  
 
