@@ -17,15 +17,19 @@ Document at least 3 bugs you found. Add rows as needed.
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
 |"Easy mode"|"Attempts left: 6."  | "Attempts left: 5." | "Attempts: 1" |
-|Guess of -20 |Warning or error. |"Go lower!" hint |None. |
+|Guess of -20 |Warning or error should be raised on guesses outside the range. |"Go lower!" hint |None. |
 |Guess of 50 |"Too low" hint |"Too high" hint | None.|
-
+|"Hard" difficulty | Dynamically change upper range to reflect limits based on difficulty level. "Guess a number between 1 and 50."   | Static text in game instructions with incorrect upper bound.| "Guess a number between 1 and 100."  |
 ---
 
 ## 2. How did you use AI as a teammate?
 
 - Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+  - Claude Code.  
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+  - AI correctly suggested that the logic in the guess was correct but just the hint messages needed to be swapped in `check_guess()`, lines 37-40.
+  - For example: "Too High", "📈 Go HIGHER!" should be replaced with "Too High", 📉 Go LOWER!"
+  - I verified this result by implementing the changes and then playing the game. I also ran the logic test cases in `test_game_logic.py` that corresponded with the hints I'd expect as a user making guesses.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
 ---
