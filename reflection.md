@@ -37,21 +37,30 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 3. Debugging and testing your fixes
 
 - How did you decide whether a bug was really fixed?
+  - I played the game for myself after making a fix and I ran the corresponding unit tests.
 - Describe at least one test you ran (manual or using pytest)  
   and what it showed you about your code.
+  - I tested if the guess was too low. If the secret is 50 and the guess is 40, then the hint should say "Too Low" in the message.  
 - Did AI help you design or understand any tests? How?
-
+  - AI helped explain that the original test cases only tested the result variable but not the actual text content in the message.
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+"Every click restarts the whole script, but session state is the one part of memory that's allowed to survive the restart."
 
+- Claude's Explanation:  
+  Session state: Think of it as a sticky note that survives the chef throwing everything out and starting over. It's a little dictionary-like storage (st.session_state) that persists across reruns for a given user's session. So instead of declaring counter = 0 at the top of your script (which would reset every rerun), you stash it in st.session_state.counter, and Streamlit keeps that value around between reruns — until the browser tab closes or the session ends.
+- Putting it together with an analogy: Picture a whiteboard (your script) that gets erased and rewritten from scratch every time someone asks a question. Normally anything written on it disappears. But there's a locked drawer next to the whiteboard (session state) that doesn't get erased — so if you want certain numbers or choices to survive between rewrites, you put them in the drawer instead of writing them directly on the board.
 ---
 
 ## 5. Looking ahead: your developer habits
 
 - What is one habit or strategy from this project that you want to reuse in future labs or projects?
   - This could be a testing habit, a prompting strategy, or a way you used Git.
+  - Writing distinct unit tests to incremental changes is a good practice to adopt.
 - What is one thing you would do differently next time you work with AI on a coding task?
+  - I would try to change one thing at a time. And verify it. I think AI wants to do to many large changes at once; the plan mode suggested can just have too much cognitive overload. I would try to break down changes into even smaller, incremental steps.  
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+  - I think that AI can be useful in debugging -- given that you provide the contextual artifacts to refer to. But I think that AI can be less useful because it tries too hard to over optimize EVERYTHING at once.
