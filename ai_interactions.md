@@ -41,13 +41,24 @@
 **Prompt used:**
 
 ```
-<!-- Paste the prompt you gave the AI -->
+Add docstrings to every function in `logic_utils.py`.  
 ```
 
 **Linting output before:**
-
+The format is nicely indented. The arguments and outputs are nicely formatted.  
 ```
-<!-- Paste relevant linter warnings/errors -->
+    """Parse raw user input into an integer guess.
+
+    Args:
+        raw: The raw guess string entered by the user. May be None or empty.
+
+    Returns:
+        A (ok, guess_int, error_message) tuple:
+            ok: True if parsing succeeded, False otherwise.
+            guess_int: The parsed int guess, or None when parsing failed.
+            error_message: A user-facing error string when parsing failed,
+                or None on success.
+    """
 ```
 
 **Changes applied:**
