@@ -16,10 +16,10 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-|"Easy mode"|"Attempts left: 6."  | "Attempts left: 5." | "Attempts: 1" |
-|Guess of -20 |Warning or error should be raised on guesses outside the range. |"Go lower!" hint |None. |
-|Guess of 50 |"Too low" hint |"Too high" hint | None.|
-|"Hard" difficulty | Dynamically change upper range to reflect limits based on difficulty level. "Guess a number between 1 and 50."   | Static text in game instructions with incorrect upper bound.| "Guess a number between 1 and 100."  |
+|"Easy mode"|"Attempts left: 6."  | "Attempts left: 5." | "Attempts: 1" `st.session_state.attempts = 1`|
+|Guess of -20 |Warning or error should be raised on guesses outside the range. |"Go lower!" hint | `check_guess()` error message incorrect logic.|
+|Guess of 50 |"Too low" hint |"Too high" hint | `check_guess()` error message prints opposite message.|
+|"Hard" difficulty | Dynamically change upper range to reflect limits based on difficulty level. "Guess a number between 1 and 50."   | Static text in game instructions with incorrect upper bound.| "Guess a number between 1 and 100." In lines 94-95, `st.info(f"Guess a number between 1 and 100.)` |
 ---
 
 ## 2. How did you use AI as a teammate?
@@ -31,7 +31,11 @@ Document at least 3 bugs you found. Add rows as needed.
   - For example: "Too High", "📈 Go HIGHER!" should be replaced with "Too High", 📉 Go LOWER!"
   - I verified this result by implementing the changes and then playing the game. I also ran the logic test cases in `test_game_logic.py` that corresponded with the hints I'd expect as a user making guesses.
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
-
+- AI says that the reason the difficulty level is not being updated when the user selects one from the drop-down list is because:  
+```
+- 1) secret is seeded once and not re-rolled when you change difficulty mid-game, so it can fall outside the new range.
+```
+- I do not know yet if that is correct. But to verify that you'd have to implement the change. And play the game for yourself. Or write a unit test that tests for the user flow of: selecting difficult, guessing, and receiving feedback.  
 ---
 
 ## 3. Debugging and testing your fixes
@@ -48,12 +52,14 @@ Document at least 3 bugs you found. Add rows as needed.
 ## 4. What did you learn about Streamlit and state?
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
-"Every click restarts the whole script, but session state is the one part of memory that's allowed to survive the restart."
+- "Every click restarts the whole script, but session state is the one part of memory that's allowed to survive the restart."
 
 - Claude's Explanation:  
-  Session state: Think of it as a sticky note that survives the chef throwing everything out and starting over. It's a little dictionary-like storage (st.session_state) that persists across reruns for a given user's session. So instead of declaring counter = 0 at the top of your script (which would reset every rerun), you stash it in st.session_state.counter, and Streamlit keeps that value around between reruns — until the browser tab closes or the session ends.
-- Putting it together with an analogy: Picture a whiteboard (your script) that gets erased and rewritten from scratch every time someone asks a question. Normally anything written on it disappears. But there's a locked drawer next to the whiteboard (session state) that doesn't get erased — so if you want certain numbers or choices to survive between rewrites, you put them in the drawer instead of writing them directly on the board.
----
+  ```Session state: Think of it as a sticky note that survives the chef throwing everything out and starting over. It's a little dictionary-like storage (st.session_state) that persists across reruns for a given user's session. So instead of declaring counter = 0 at the top of your script (which would reset every rerun), you stash it in st.session_state.counter, and Streamlit keeps that value around between reruns — until the browser tab closes or the session ends.
+  
+  Putting it together with an analogy: Picture a whiteboard (your script) that gets erased and rewritten from scratch every time someone asks a question. Normally anything written on it disappears. But there's a locked drawer next to the whiteboard (session state) that doesn't get erased — so if you want certain numbers or choices to survive between rewrites, you put them in the drawer instead of writing them directly on the board.```
+
+---  
 
 ## 5. Looking ahead: your developer habits
 

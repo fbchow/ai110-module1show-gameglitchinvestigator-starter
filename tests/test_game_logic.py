@@ -1,4 +1,5 @@
 from logic_utils import check_guess
+from app import get_range_for_difficulty
 
 def test_winning_guess():
     # If the secret is 50 and guess is 50, it should be a win
@@ -24,3 +25,16 @@ def test_high_low_hints_point_the_right_way():
     # A guess BELOW the secret must tell the player to go HIGHER.
     _, message = check_guess(40, 50)
     assert "HIGHER" in message
+
+def test_banner_range_reflects_difficulty():
+    # Regression: the guess banner used to hardcode "between 1 and 100"
+    # regardless of difficulty. The range must track the selected level.
+    assert get_range_for_difficulty("Easy") == (1, 20)
+    assert get_range_for_difficulty("Normal") == (1, 100)
+    assert get_range_for_difficulty("Hard") == (1, 50)
+
+    # The banner string is built from this range, so the upper bound shown
+    # must match the difficulty's high value.
+    low, high = get_range_for_difficulty("Hard")
+    banner = f"Guess a number between {low} and {high}. "
+    assert "between 1 and 50" in banner
